@@ -7,3 +7,9 @@ const gameBoard = (function () {
 
   return { getGameBoard, setGameBoard };
 })();
+
+const gameController = (function () {})();
+
+function createPlayer(name, marker) {
+  return { name, marker };
+}
