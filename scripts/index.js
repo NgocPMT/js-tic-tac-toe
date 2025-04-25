@@ -11,5 +11,10 @@ const gameBoard = (function () {
 const gameController = (function () {})();
 
 function createPlayer(name, marker) {
-  return { name, marker };
+  let isNext = false;
+
+  const switchTurn = () => (isNext = !isNext);
+  const isTurn = () => isNext;
+
+  return { name, marker, isTurn, switchTurn };
 }
