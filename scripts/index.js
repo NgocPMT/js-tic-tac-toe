@@ -22,7 +22,14 @@ const gameController = (function () {
     for (let i = 0; i < board.length; i += 3) {
       console.log(`${board[i]} ${board[i + 1]} ${board[i + 2]}`);
     }
-    console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
+
+    const winner = calculateWinner(board);
+
+    if (!winner) {
+      console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
+    } else {
+      console.log(`Winner: ${winner}`);
+    }
   };
 
   const putMark = (position) => {
@@ -33,6 +40,30 @@ const gameController = (function () {
 
     gameBoard.setBoard(board);
     renderBoard();
+  };
+
+  const calculateWinner = (gameBoard) => {
+    const winningLines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (line in winningLines) {
+      const [a, b, c] = line;
+      if (
+        gameBoard[a] != "-1" &&
+        gameBoard[a] === gameBoard[b] &&
+        gameBoard[a] === gameBoard[c]
+      ) {
+        return (gameBoard[a] = "X" ? player1.name : player2.name);
+      }
+    }
   };
 
   return { renderBoard, putMark };
