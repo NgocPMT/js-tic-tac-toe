@@ -1,14 +1,12 @@
 const gameBoard = (function () {
-  let gameBoard = [];
+  let gameBoard = Array(9).fill("0");
 
-  const getGameBoard = () => gameBoard;
+  const getBoard = () => gameBoard;
 
-  const setGameBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
+  const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
 
-  return { getGameBoard, setGameBoard };
+  return { getBoard, setBoard };
 })();
-
-const gameController = (function () {})();
 
 function createPlayer(name, marker) {
   let isNext = false;
@@ -18,3 +16,16 @@ function createPlayer(name, marker) {
 
   return { name, marker, isTurn, switchTurn };
 }
+
+const gameController = (function () {
+  const renderBoard = () => {
+    const board = gameBoard.getBoard();
+    for (let i = 0; i < board.length; i += 3) {
+      console.log(`${board[i]} ${board[i + 1]} ${board[i + 2]}`);
+    }
+  };
+
+  return { renderBoard };
+})();
+
+gameController.renderBoard();
