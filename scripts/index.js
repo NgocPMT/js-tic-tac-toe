@@ -121,7 +121,6 @@ const game = (function () {
 
     const showNameInputModal = () => {
       const nameInputModal = document.querySelector("#name-input-modal");
-      const submitNameBtn = document.querySelector("#name-submit");
       const closeModalBtn = document.querySelector(".modal-close");
 
       nameInputModal.addEventListener("submit", (event) => {

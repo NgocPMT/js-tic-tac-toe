@@ -63,6 +63,7 @@ html, body {
   grid-template-columns: repeat(3, 10rem);
   grid-template-rows: repeat(3, 10rem);
   justify-content: center;
+  border: 5px solid black;
 }
 
 .board-tile {
@@ -70,8 +71,10 @@ html, body {
   border-collapse: collapse;
   display: grid;
   place-items: center;
-  font-size: 3.5rem;
+  font-size: 4.5rem;
 }
+
+
 
 #name-input-modal {
   margin: 0 auto;
