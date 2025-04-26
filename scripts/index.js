@@ -77,43 +77,60 @@ const gameController = (function () {
   };
 
   const resetBoard = () => {
-    gameBoard.setBoard(Array(9).fill(null));
+    gameBoard.setBoard(Array(9).fill(""));
     xIsNext = true;
   };
 
   return { putMark, resetBoard, getStatus };
 })();
 
-const displayController = (function () {
-  const renderBoard = () => {
-    const board = gameBoard.getBoard();
+const startGameBtn = document.querySelector("#start-game");
 
-    const boardTiles = board
-      .map((tile) => `<div class="board-tile">${tile}</div>`)
-      .join("");
+startGameBtn.addEventListener("click", () => {
+  const displayController = (function () {
+    const renderBoard = () => {
+      const board = gameBoard.getBoard();
 
-    const gameBoardEl = document.querySelector("#game-board");
+      const boardTiles = board
+        .map((tile) => `<div class="board-tile">${tile}</div>`)
+        .join("");
 
-    gameBoardEl.innerHTML = boardTiles;
+      const gameBoardEl = document.querySelector("#game-board");
 
-    const boardTileEls = document.querySelectorAll(".board-tile");
+      gameBoardEl.innerHTML = boardTiles;
 
-    boardTileEls.forEach((tile, position) => {
-      tile.addEventListener("click", () => {
-        console.log(`Mark at ${position}`);
-        gameController.putMark(position);
-        renderBoard();
+      const boardTileEls = document.querySelectorAll(".board-tile");
+
+      boardTileEls.forEach((tile, position) => {
+        tile.addEventListener("click", () => {
+          console.log(`Mark at ${position}`);
+          gameController.putMark(position);
+          renderBoard();
+        });
       });
-    });
 
-    const gameStatusEl = document.querySelector("#game-status");
+      const gameStatusEl = document.querySelector("#game-status");
 
-    const status = gameController.getStatus();
+      const status = gameController.getStatus();
 
-    gameStatusEl.textContent = status;
-  };
+      gameStatusEl.textContent = status;
+    };
 
-  return { renderBoard };
-})();
+    return { renderBoard };
+  })();
 
-displayController.renderBoard();
+  displayController.renderBoard();
+
+  startGameBtn.style.backgroundColor = "rgb(70, 70, 100)";
+  startGameBtn.style.cursor = "default";
+
+  const resetGameBtn = document.querySelector("#reset-game");
+
+  resetGameBtn.addEventListener("click", () => {
+    gameController.resetBoard();
+    displayController.renderBoard();
+  });
+
+  resetGameBtn.style.backgroundColor = "rgb(23, 109, 230)";
+  resetGameBtn.style.cursor = "pointer";
+});

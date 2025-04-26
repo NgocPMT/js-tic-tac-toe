@@ -44,10 +44,16 @@ html, body {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.game-button:hover {
-  opacity: 0.8;
+#reset-game {
+  background-color: rgb(70, 70, 100);
+  cursor: default;
+}
+
+.game-button:active {
+  transform: translateY(3px);
 }
 
 #game-board {
