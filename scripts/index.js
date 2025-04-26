@@ -9,14 +9,19 @@ const game = (function () {
     return { getBoard, setBoard };
   })();
 
-  function createPlayer(name, marker) {
-    return { name, marker };
-  }
-
   const gameController = (function () {
-    const player1 = createPlayer("Player 1", "X");
-    const player2 = createPlayer("Player 2", "O");
+    function createPlayer(name, marker) {
+      return { name, marker };
+    }
+
+    let player1;
+    let player2;
     let xIsNext = true;
+
+    const initPlayer = (name, name2) => {
+      player1 = createPlayer(name, "X");
+      player2 = createPlayer(name2, "O");
+    };
 
     const isBoardFull = () => {
       const board = gameBoard.getBoard();
@@ -82,7 +87,7 @@ const game = (function () {
       xIsNext = true;
     };
 
-    return { putMark, resetBoard, getStatus };
+    return { initPlayer, putMark, resetBoard, getStatus };
   })();
 
   const displayController = (function () {
@@ -118,6 +123,7 @@ const game = (function () {
   })();
 
   const start = () => {
+    gameController.initPlayer("John Doe", "Jane Doe");
     console.log("game started");
     displayController.renderBoard();
 
