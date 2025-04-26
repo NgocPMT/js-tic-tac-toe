@@ -24,6 +24,7 @@ const gameController = (function () {
     }
 
     const winner = calculateWinner(board);
+    console.log(winner);
 
     if (!winner) {
       console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
@@ -35,8 +36,12 @@ const gameController = (function () {
   const putMark = (position) => {
     const board = gameBoard.getBoard();
 
-    board[position] = xIsNext ? player1.marker : player2.marker;
-    xIsNext = !xIsNext;
+    if (board[position] === "-1") {
+      board[position] = xIsNext ? player1.marker : player2.marker;
+      xIsNext = !xIsNext;
+    } else {
+      console.log("this tile is already marked");
+    }
 
     gameBoard.setBoard(board);
     renderBoard();
@@ -54,16 +59,19 @@ const gameController = (function () {
       [2, 4, 6],
     ];
 
-    for (line in winningLines) {
+    for (const line of winningLines) {
       const [a, b, c] = line;
       if (
         gameBoard[a] != "-1" &&
         gameBoard[a] === gameBoard[b] &&
         gameBoard[a] === gameBoard[c]
       ) {
-        return (gameBoard[a] = "X" ? player1.name : player2.name);
+        console.log("win");
+        return gameBoard[a] === "X" ? player1.name : player2.name;
       }
     }
+
+    return null;
   };
 
   return { renderBoard, putMark };
