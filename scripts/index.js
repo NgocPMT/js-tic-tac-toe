@@ -17,6 +17,11 @@ const gameController = (function () {
   const player2 = createPlayer("Player 2", "O");
   let xIsNext = true;
 
+  const isBoardFull = () => {
+    const board = gameBoard.getBoard();
+    return board.every((tile) => tile != "-1");
+  };
+
   const renderBoard = () => {
     const board = gameBoard.getBoard();
     for (let i = 0; i < board.length; i += 3) {
@@ -24,12 +29,13 @@ const gameController = (function () {
     }
 
     const winner = calculateWinner(board);
-    console.log(winner);
 
-    if (!winner) {
-      console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
-    } else {
+    if (winner) {
       console.log(`Winner: ${winner}`);
+    } else if (isBoardFull()) {
+      console.log("Result: Tie");
+    } else {
+      console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
     }
   };
 
