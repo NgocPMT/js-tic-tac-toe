@@ -1,13 +1,3 @@
-const gameBoard = (function () {
-  let gameBoard = Array(9).fill("-1");
-
-  const getBoard = () => gameBoard;
-
-  const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
-
-  return { getBoard, setBoard };
-})();
-
 function createPlayer(name, marker) {
   return { name, marker };
 }
@@ -17,9 +7,46 @@ const gameController = (function () {
   const player2 = createPlayer("Player 2", "O");
   let xIsNext = true;
 
+  const gameBoard = (function () {
+    let gameBoard = Array(9).fill("-1");
+
+    const getBoard = () => gameBoard;
+
+    const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
+
+    return { getBoard, setBoard };
+  })();
+
   const isBoardFull = () => {
     const board = gameBoard.getBoard();
     return board.every((tile) => tile != "-1");
+  };
+
+  const calculateWinner = (gameBoard) => {
+    const winningLines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (const line of winningLines) {
+      const [a, b, c] = line;
+      if (
+        gameBoard[a] != "-1" &&
+        gameBoard[a] === gameBoard[b] &&
+        gameBoard[a] === gameBoard[c]
+      ) {
+        console.log("win");
+        return gameBoard[a] === "X" ? player1.name : player2.name;
+      }
+    }
+
+    return null;
   };
 
   const renderBoard = () => {
@@ -53,34 +80,13 @@ const gameController = (function () {
     renderBoard();
   };
 
-  const calculateWinner = (gameBoard) => {
-    const winningLines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-
-    for (const line of winningLines) {
-      const [a, b, c] = line;
-      if (
-        gameBoard[a] != "-1" &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-      ) {
-        console.log("win");
-        return gameBoard[a] === "X" ? player1.name : player2.name;
-      }
-    }
-
-    return null;
+  const resetBoard = () => {
+    gameBoard.setBoard(Array(9).fill("-1"));
+    xIsNext = true;
+    renderBoard();
   };
 
-  return { renderBoard, putMark };
+  return { renderBoard, putMark, resetBoard };
 })();
 
 gameController.renderBoard();
