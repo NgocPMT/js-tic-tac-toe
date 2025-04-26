@@ -91,15 +91,17 @@ const game = (function () {
   })();
 
   const displayController = (function () {
+    let isEventListenerAttached = false;
+
     const renderBoard = () => {
       const board = gameBoard.getBoard();
 
       const boardTiles = board
         .map(
-          (tile) =>
+          (tile, position) =>
             `<div class="board-tile" style="color: ${
               tile === "X" ? "red" : "green"
-            }">${tile}</div>`
+            }" data-position=${position}>${tile}</div>`
         )
         .join("");
 
@@ -107,15 +109,22 @@ const game = (function () {
 
       gameBoardEl.innerHTML = boardTiles;
 
-      const boardTileEls = document.querySelectorAll(".board-tile");
+      if (!isEventListenerAttached) {
+        gameBoardEl.addEventListener("click", (event) => {
+          const clickedTile = event.target;
+          const clickedPosition = clickedTile.dataset.position;
 
-      boardTileEls.forEach((tile, position) => {
-        tile.addEventListener("click", () => {
-          console.log(`Mark at ${position}`);
-          gameController.putMark(position);
-          renderBoard();
+          if (
+            clickedTile.classList.contains("board-tile") &&
+            !!clickedPosition
+          ) {
+            gameController.putMark(Number(clickedPosition));
+            renderBoard();
+          }
         });
-      });
+      }
+
+      isEventListenerAttached = true;
 
       const gameStatusEl = document.querySelector("#game-status");
 
