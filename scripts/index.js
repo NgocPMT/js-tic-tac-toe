@@ -119,14 +119,45 @@ const game = (function () {
       gameStatusEl.textContent = status;
     };
 
-    return { renderBoard };
+    const showNameInputModal = () => {
+      const nameInputModal = document.querySelector("#name-input-modal");
+      const submitNameBtn = document.querySelector("#name-submit");
+      const closeModalBtn = document.querySelector(".modal-close");
+
+      nameInputModal.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const player1Name = document
+          .querySelector("#player1-name")
+          .value.trim();
+        const player2Name = document
+          .querySelector("#player2-name")
+          .value.trim();
+
+        gameController.initPlayer(player1Name, player2Name);
+
+        nameInputModal.close();
+
+        game.start();
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        nameInputModal.close();
+      });
+
+      nameInputModal.showModal();
+    };
+
+    return { renderBoard, showNameInputModal };
   })();
 
+  const getPlayersName = () => {
+    displayController.showNameInputModal();
+  };
+
   const start = () => {
-    gameController.initPlayer("John Doe", "Jane Doe");
     console.log("game started");
     displayController.renderBoard();
-
     startGameBtn.style.backgroundColor = "rgb(70, 70, 100)";
     startGameBtn.style.cursor = "default";
     startGameBtn.disabled = true;
@@ -142,11 +173,11 @@ const game = (function () {
     resetGameBtn.style.cursor = "pointer";
   };
 
-  return { start };
+  return { start, getPlayersName };
 })();
 
 const startGameBtn = document.querySelector("#start-game");
 
 startGameBtn.addEventListener("click", () => {
-  game.start();
+  game.getPlayersName();
 });

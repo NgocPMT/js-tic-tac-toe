@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* outline: 2px solid red; */
 }
 
 html, body {
@@ -71,3 +72,58 @@ html, body {
   place-items: center;
   font-size: 3.5rem;
 }
+
+#name-input-modal {
+  margin: 0 auto;
+  padding: 1.5rem 3.5rem 2.5rem 3.5rem;
+  top: 25%;
+  border: none;
+  background-color: azure;
+  width: 40%;
+  border-radius: 0.75rem;
+}
+
+#name-input-form label{
+  width: 100%;
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+#name-input-form input {
+  margin-top: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+}
+
+.modal-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-buttons button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: rgb(23, 109, 230);
+  color: azure;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-buttons button:hover {
+  opacity: 0.8;
+}
+
+.modal-buttons .modal-close {
+  background-color: rgb(102, 115, 126);
+}
+
