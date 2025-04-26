@@ -49,20 +49,16 @@ const gameController = (function () {
     return null;
   };
 
-  const renderBoard = () => {
+  const getStatus = () => {
     const board = gameBoard.getBoard();
-    for (let i = 0; i < board.length; i += 3) {
-      console.log(`${board[i]} ${board[i + 1]} ${board[i + 2]}`);
-    }
-
     const winner = calculateWinner(board);
 
     if (winner) {
-      console.log(`Winner: ${winner}`);
+      return `Winner: ${winner}`;
     } else if (isBoardFull()) {
-      console.log("Result: Tie");
+      return "Result: Tie";
     } else {
-      console.log(`Next turn: ${xIsNext ? player1.name : player2.name}`);
+      return `Next turn: ${xIsNext ? player1.name : player2.name}`;
     }
   };
 
@@ -86,7 +82,7 @@ const gameController = (function () {
     renderBoard();
   };
 
-  return { renderBoard, putMark, resetBoard };
+  return { putMark, resetBoard, getStatus };
 })();
 
 const displayController = (function () {
@@ -94,17 +90,26 @@ const displayController = (function () {
     const board = gameBoard.getBoard();
 
     const boardTiles = board
-      .map((tile) => `<div class="board-tile">${tile}</div>`)
+      .map(
+        (tile) =>
+          `<div class="board-tile" data-position=${board.indexOf(
+            tile
+          )}>${tile}</div>`
+      )
       .join("");
 
     const gameBoardEl = document.querySelector("#game-board");
 
     gameBoardEl.innerHTML = boardTiles;
+
+    const gameStatusEl = document.querySelector("#game-status");
+
+    const status = gameController.getStatus();
+
+    gameStatusEl.textContent = status;
   };
 
   return { renderBoard };
 })();
-
-gameController.renderBoard();
 
 displayController.renderBoard();
