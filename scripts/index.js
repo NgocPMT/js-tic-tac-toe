@@ -1,92 +1,90 @@
-const gameBoard = (function () {
-  let gameBoard = Array(9).fill("");
+const game = (function () {
+  const gameBoard = (function () {
+    let gameBoard = Array(9).fill("");
 
-  const getBoard = () => gameBoard;
+    const getBoard = () => gameBoard;
 
-  const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
+    const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
 
-  return { getBoard, setBoard };
-})();
+    return { getBoard, setBoard };
+  })();
 
-function createPlayer(name, marker) {
-  return { name, marker };
-}
+  function createPlayer(name, marker) {
+    return { name, marker };
+  }
 
-const gameController = (function () {
-  const player1 = createPlayer("Player 1", "X");
-  const player2 = createPlayer("Player 2", "O");
-  let xIsNext = true;
+  const gameController = (function () {
+    const player1 = createPlayer("Player 1", "X");
+    const player2 = createPlayer("Player 2", "O");
+    let xIsNext = true;
 
-  const isBoardFull = () => {
-    const board = gameBoard.getBoard();
-    return board.every((tile) => !!tile);
-  };
+    const isBoardFull = () => {
+      const board = gameBoard.getBoard();
+      return board.every((tile) => !!tile);
+    };
 
-  const calculateWinner = (gameBoard) => {
-    const winningLines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
+    const calculateWinner = (gameBoard) => {
+      const winningLines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
 
-    for (const line of winningLines) {
-      const [a, b, c] = line;
-      if (
-        !!gameBoard[a] &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-      ) {
-        return gameBoard[a] === "X" ? player1.name : player2.name;
+      for (const line of winningLines) {
+        const [a, b, c] = line;
+        if (
+          !!gameBoard[a] &&
+          gameBoard[a] === gameBoard[b] &&
+          gameBoard[a] === gameBoard[c]
+        ) {
+          return gameBoard[a] === "X" ? player1.name : player2.name;
+        }
       }
-    }
 
-    return null;
-  };
+      return null;
+    };
 
-  const getStatus = () => {
-    const board = gameBoard.getBoard();
-    const winner = calculateWinner(board);
+    const getStatus = () => {
+      const board = gameBoard.getBoard();
+      const winner = calculateWinner(board);
 
-    if (winner) {
-      return `Winner: ${winner}`;
-    } else if (isBoardFull()) {
-      return "Result: Tie";
-    } else {
-      return `Next turn: ${xIsNext ? player1.name : player2.name}`;
-    }
-  };
+      if (winner) {
+        return `Winner: ${winner}`;
+      } else if (isBoardFull()) {
+        return "Result: Tie";
+      } else {
+        return `Next turn: ${xIsNext ? player1.name : player2.name}`;
+      }
+    };
 
-  const putMark = (position) => {
-    const board = gameBoard.getBoard();
+    const putMark = (position) => {
+      const board = gameBoard.getBoard();
 
-    if (!board[position] && !calculateWinner(board)) {
-      board[position] = xIsNext ? player1.marker : player2.marker;
-      xIsNext = !xIsNext;
-    } else if (calculateWinner(board)) {
-      console.log("The game is over");
-    } else {
-      console.log("this tile is already marked");
-    }
+      if (!board[position] && !calculateWinner(board)) {
+        board[position] = xIsNext ? player1.marker : player2.marker;
+        xIsNext = !xIsNext;
+      } else if (calculateWinner(board)) {
+        console.log("The game is over");
+      } else {
+        console.log("this tile is already marked");
+      }
 
-    gameBoard.setBoard(board);
-  };
+      gameBoard.setBoard(board);
+    };
 
-  const resetBoard = () => {
-    gameBoard.setBoard(Array(9).fill(""));
-    xIsNext = true;
-  };
+    const resetBoard = () => {
+      gameBoard.setBoard(Array(9).fill(""));
+      xIsNext = true;
+    };
 
-  return { putMark, resetBoard, getStatus };
-})();
+    return { putMark, resetBoard, getStatus };
+  })();
 
-const startGameBtn = document.querySelector("#start-game");
-
-startGameBtn.addEventListener("click", () => {
   const displayController = (function () {
     const renderBoard = () => {
       const board = gameBoard.getBoard();
@@ -119,18 +117,30 @@ startGameBtn.addEventListener("click", () => {
     return { renderBoard };
   })();
 
-  displayController.renderBoard();
-
-  startGameBtn.style.backgroundColor = "rgb(70, 70, 100)";
-  startGameBtn.style.cursor = "default";
-
-  const resetGameBtn = document.querySelector("#reset-game");
-
-  resetGameBtn.addEventListener("click", () => {
-    gameController.resetBoard();
+  const start = () => {
+    console.log("game started");
     displayController.renderBoard();
-  });
 
-  resetGameBtn.style.backgroundColor = "rgb(23, 109, 230)";
-  resetGameBtn.style.cursor = "pointer";
+    startGameBtn.style.backgroundColor = "rgb(70, 70, 100)";
+    startGameBtn.style.cursor = "default";
+    startGameBtn.disabled = true;
+
+    const resetGameBtn = document.querySelector("#reset-game");
+
+    resetGameBtn.addEventListener("click", () => {
+      gameController.resetBoard();
+      displayController.renderBoard();
+    });
+
+    resetGameBtn.style.backgroundColor = "rgb(23, 109, 230)";
+    resetGameBtn.style.cursor = "pointer";
+  };
+
+  return { start };
+})();
+
+const startGameBtn = document.querySelector("#start-game");
+
+startGameBtn.addEventListener("click", () => {
+  game.start();
 });
