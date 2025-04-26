@@ -1,5 +1,5 @@
 const gameBoard = (function () {
-  let gameBoard = Array(9).fill("-1");
+  let gameBoard = Array(9).fill("");
 
   const getBoard = () => gameBoard;
 
@@ -19,7 +19,7 @@ const gameController = (function () {
 
   const isBoardFull = () => {
     const board = gameBoard.getBoard();
-    return board.every((tile) => tile != "-1");
+    return board.every((tile) => !!tile);
   };
 
   const calculateWinner = (gameBoard) => {
@@ -37,7 +37,7 @@ const gameController = (function () {
     for (const line of winningLines) {
       const [a, b, c] = line;
       if (
-        gameBoard[a] != "-1" &&
+        !!gameBoard[a] &&
         gameBoard[a] === gameBoard[b] &&
         gameBoard[a] === gameBoard[c]
       ) {
@@ -64,7 +64,7 @@ const gameController = (function () {
   const putMark = (position) => {
     const board = gameBoard.getBoard();
 
-    if (board[position] === "-1") {
+    if (!board[position] && !calculateWinner(board)) {
       board[position] = xIsNext ? player1.marker : player2.marker;
       xIsNext = !xIsNext;
     } else if (calculateWinner(board)) {
@@ -77,7 +77,7 @@ const gameController = (function () {
   };
 
   const resetBoard = () => {
-    gameBoard.setBoard(Array(9).fill("-1"));
+    gameBoard.setBoard(Array(9).fill(null));
     xIsNext = true;
   };
 
