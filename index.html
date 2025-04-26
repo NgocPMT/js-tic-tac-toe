@@ -7,19 +7,51 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <h1 class="heading-text">Tic-tac-toe</h1>
-    <div id="game">
-      <div id="game-buttons">
-        <button class="game-button" type="button" id="start-game">
-          Start Game
-        </button>
-        <button class="game-button" type="button" id="reset-game">
-          Reset Game
-        </button>
+    <main>
+      <h1 class="heading-text">Tic-tac-toe</h1>
+      <div id="game">
+        <div id="game-buttons">
+          <button class="game-button" type="button" id="start-game">
+            Start Game
+          </button>
+          <button class="game-button" type="button" id="reset-game">
+            Reset Game
+          </button>
+        </div>
+        <p id="game-status"></p>
+        <div id="game-board"></div>
       </div>
-      <p id="game-status"></p>
-      <div id="game-board"></div>
-    </div>
+    </main>
+
+    <dialog id="name-input-modal" tabindex="-1">
+      <form id="name-input-form">
+        <div class="form-field">
+          <label for="player1-name">Player 1</label>
+          <input
+            id="player1-name"
+            type="text"
+            name="player1-name"
+            required
+            minlength="2"
+            max="20"
+          />
+        </div>
+        <div class="form-field">
+          <label for="player2-name">Player 2</label>
+          <input
+            id="player2-name"
+            type="text"
+            name="player2-name"
+            required
+            minlength="2"
+            max="20"
+          />
+        </div>
+        <div>
+          <button id="name-submit" type="submit">Submit</button>
+        </div>
+      </form>
+    </dialog>
 
     <script src="scripts/index.js"></script>
   </body>
