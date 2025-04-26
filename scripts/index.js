@@ -41,7 +41,6 @@ const gameController = (function () {
         gameBoard[a] === gameBoard[b] &&
         gameBoard[a] === gameBoard[c]
       ) {
-        console.log("win");
         return gameBoard[a] === "X" ? player1.name : player2.name;
       }
     }
@@ -68,18 +67,18 @@ const gameController = (function () {
     if (board[position] === "-1") {
       board[position] = xIsNext ? player1.marker : player2.marker;
       xIsNext = !xIsNext;
+    } else if (calculateWinner(board)) {
+      console.log("The game is over");
     } else {
       console.log("this tile is already marked");
     }
 
     gameBoard.setBoard(board);
-    renderBoard();
   };
 
   const resetBoard = () => {
     gameBoard.setBoard(Array(9).fill("-1"));
     xIsNext = true;
-    renderBoard();
   };
 
   return { putMark, resetBoard, getStatus };
@@ -90,17 +89,22 @@ const displayController = (function () {
     const board = gameBoard.getBoard();
 
     const boardTiles = board
-      .map(
-        (tile) =>
-          `<div class="board-tile" data-position=${board.indexOf(
-            tile
-          )}>${tile}</div>`
-      )
+      .map((tile) => `<div class="board-tile">${tile}</div>`)
       .join("");
 
     const gameBoardEl = document.querySelector("#game-board");
 
     gameBoardEl.innerHTML = boardTiles;
+
+    const boardTileEls = document.querySelectorAll(".board-tile");
+
+    boardTileEls.forEach((tile, position) => {
+      tile.addEventListener("click", () => {
+        console.log(`Mark at ${position}`);
+        gameController.putMark(position);
+        renderBoard();
+      });
+    });
 
     const gameStatusEl = document.querySelector("#game-status");
 
