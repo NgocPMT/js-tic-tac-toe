@@ -1,3 +1,13 @@
+const gameBoard = (function () {
+  let gameBoard = Array(9).fill("-1");
+
+  const getBoard = () => gameBoard;
+
+  const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
+
+  return { getBoard, setBoard };
+})();
+
 function createPlayer(name, marker) {
   return { name, marker };
 }
@@ -6,16 +16,6 @@ const gameController = (function () {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
   let xIsNext = true;
-
-  const gameBoard = (function () {
-    let gameBoard = Array(9).fill("-1");
-
-    const getBoard = () => gameBoard;
-
-    const setBoard = (nextGameBoard) => (gameBoard = nextGameBoard);
-
-    return { getBoard, setBoard };
-  })();
 
   const isBoardFull = () => {
     const board = gameBoard.getBoard();
@@ -89,4 +89,22 @@ const gameController = (function () {
   return { renderBoard, putMark, resetBoard };
 })();
 
+const displayController = (function () {
+  const renderBoard = () => {
+    const board = gameBoard.getBoard();
+
+    const boardTiles = board
+      .map((tile) => `<div class="board-tile">${tile}</div>`)
+      .join("");
+
+    const gameBoardEl = document.querySelector("#game-board");
+
+    gameBoardEl.innerHTML = boardTiles;
+  };
+
+  return { renderBoard };
+})();
+
 gameController.renderBoard();
+
+displayController.renderBoard();
