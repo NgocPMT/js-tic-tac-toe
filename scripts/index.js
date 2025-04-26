@@ -95,7 +95,12 @@ const game = (function () {
       const board = gameBoard.getBoard();
 
       const boardTiles = board
-        .map((tile) => `<div class="board-tile">${tile}</div>`)
+        .map(
+          (tile) =>
+            `<div class="board-tile" style="color: ${
+              tile === "X" ? "red" : "green"
+            }">${tile}</div>`
+        )
         .join("");
 
       const gameBoardEl = document.querySelector("#game-board");
